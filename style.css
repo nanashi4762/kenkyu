@@ -21,7 +21,6 @@
 .staff-line:nth-child(3) { top: 48px; }
 .staff-line:nth-child(4) { top: 72px; }
 .staff-line:nth-child(5) { top: 96px; }
-
 .note-img {
     position: absolute;
     width: auto; /* 音符画像サイズに合わせて調整 */
@@ -130,5 +129,3 @@
   font-size: 16px;
   padding: 6px 14px;
 }
-
-
