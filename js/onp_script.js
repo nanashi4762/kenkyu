@@ -2,7 +2,7 @@ const STAFF_TOP_Y = 0;
 const LINE_GAP = 24;
 const SPACE_GAP = LINE_GAP / 2;
 const NOTE_BOTTOM_OFFSET = 3;
-let STEP_DELTA = 1; // 段ずれ補正
+let STEP_DELTA =1; // 段ずれ補正
 let NOTE_SEQ_COUNTER = 1;
 
 const TREBLE_STEPS = [
@@ -780,7 +780,7 @@ function ensureStaffRow(rowIndex) {
     const row = document.createElement('div');
     row.className = 'staff';
     row.style.width = `${rowWidthPx()}px`;     // 段幅を自動設定
-    row.style.height = `96px`;                // 既存CSSと一致（必要なら取得して代入でもOK）
+    row.style.height = `96px`;    // 段高さを自動設定
     // 5本の譜線を追加（既存のDOMを踏襲）
     for (let i = 0; i < 5; i++) {
       const line = document.createElement('div');
@@ -927,6 +927,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
-
-
