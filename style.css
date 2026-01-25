@@ -1,0 +1,132 @@
+.staff {
+    position: relative;
+    width: 720px;
+    height: 120px;
+    margin: 20px auto;
+    background-color: white;
+    border: 1px solid #00b3ff;
+}
+
+.staff-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #00b3ff;
+    z-index: 1;
+}
+
+.staff-line:nth-child(1) { top: 0px; }
+.staff-line:nth-child(2) { top: 24px; }
+.staff-line:nth-child(3) { top: 48px; }
+.staff-line:nth-child(4) { top: 72px; }
+.staff-line:nth-child(5) { top: 96px; }
+
+.note-img {
+    position: absolute;
+    width: auto; /* 音符画像サイズに合わせて調整 */
+    height: 80px;
+    cursor: grab;
+    z-index: 2;
+
+    transform: translate(0,-100%);
+    transform-origin: left bottom;
+
+    box-sizing: content-box;
+    border: 0;
+    padding: 0;
+    will-change: top;
+    user-select: none;
+}
+
+/* 音名ラベル（音符画像の直下に表示） */
+.note-label {
+  position: absolute;
+  z-index: 2;              /* 音符と同じ層でOK（背面に入れない） */
+  font-size: 12px;
+  line-height: 1.2;
+  color: #444;
+  background: rgba(255,255,255,0.85); /* 譜線の上でも見やすく */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 2px 4px;
+  pointer-events: none;     /* マウス操作を邪魔しない */
+  transform: translate(0, 4px); /* 下端から少し下げる微調整 */
+  white-space: nowrap;
+}
+
+/*小節線と拍線*/
+.measure-line,.beat-line {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+.measure-line {
+    width: 2px;
+    background-color: #00b3ff;
+    opacity: 0.9;
+}
+
+.beat-line {
+    width: 1px;
+    background-color: #00b3ff;
+    opacity: 0.3;
+}
+
+/* ロックされた音符（長さ編集不可） */
+.note-img.locked {
+  cursor: default;    /* リサイズの見た目をやめる */
+  opacity: 0.92;
+}
+
+.accidental-img {
+  width: 16px;      /* 画像に合わせて調整 */
+  height: auto;
+  opacity: 0.95;
+  z-index: 3;
+}
+
+#staff {
+  position: relative;
+  overflow: visible;
+}
+
+.tie-img { 
+  height: 20px;
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.95;
+}
+
+#score {position: relative; }
+
+.rest-img {
+  position: absolute;
+  height: 80px;
+  z-index: 2;
+  pointer-events: auto;
+  user-select: none;
+  transform: translate(0,-100%);
+  transform-origin: left bottom;
+  cursor: grab;
+}
+
+/* ★ ボタン行を左右に分けるレイアウト */
+.toolbar {
+  display: flex;
+  justify-content: space-between; /* 左ボタン群 ←→ 右ボタン */
+  align-items: center;
+  margin-bottom: 8px;
+  width: 720px;         /* staff に合わせると揃ってキレイ */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 右端の再生ボタンの見た目はお好みで */
+.play-button {
+  font-size: 16px;
+  padding: 6px 14px;
+}

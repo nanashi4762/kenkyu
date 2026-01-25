@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作曲支援Webアプリ</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.36/Tone.js"></script>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <h1>作曲支援Webアプリ</h1>
+    <br>
+    <h2>使い方</h2>
+    <ol>
+      <li>「四分音符」ボタンを押して五線譜に音符を追加</li>
+      <li>「四分休符」ボタンを押して五線譜に休符を追加</li>
+      <li> 音符・休符の右側をクリックしたまま横ドラッグで長さを変更</li>
+      <li> 音符・休符の左側をクリックしたまま上下ドラッグで高さを変更</li>
+      <li>テンポを設定（デフォルトは120BPM）</li>
+      <li>「▶ 再生」ボタンを押してメロディを再生</li>
+    </ol>
+
+<!-- ▼ 楽譜入力エリア ▼ -->
+<h2>メロディ作成</h2>
+<!-- ★ ボタン行を flex にするため class を付ける -->
+<div class="toolbar">
+  <div class="left-buttons">
+    <button id="btnInsertonp">四分音符</button>
+    <button id="btnInsertkyh">四分休符</button>
+  </div>
+  <!-- ★ 右端に置きたい再生ボタン -->
+
+  <div id="transport" style="margin:8px 0;">
+    <label>テンポ: <input id="bpm" type="number" value="120" min="30" max="240" step="1"> </label>
+  </div>
+  <button id="btnPlay" class="play-button">▶ 再生</button>
+</div>
+<br>
+
+<div id="score">
+  <div id="staff" class="staff">
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+    <div class="staff-line"></div>
+  </div>
+</div>
+
+  <script src="js/muse_script.js"></script>
+  <script src="js/onp_script.js"></script>
+</body>
+</html>
