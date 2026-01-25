@@ -2,7 +2,7 @@ const STAFF_TOP_Y = 0;
 const LINE_GAP = 24;
 const SPACE_GAP = LINE_GAP / 2;
 const NOTE_BOTTOM_OFFSET = 3;
-let STEP_DELTA = 3; // 段ずれ補正
+let STEP_DELTA = 1; // 段ずれ補正
 let NOTE_SEQ_COUNTER = 1;
 
 const TREBLE_STEPS = [
@@ -927,4 +927,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
 
