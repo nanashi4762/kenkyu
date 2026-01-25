@@ -2,7 +2,7 @@
     position: relative;
     width: 720px;
     height: 96px;
-    margin: 20px auto;
+    margin: 60px auto;
     background-color: white;
     border: 1px solid #00b3ff;
 }
@@ -130,4 +130,5 @@
   font-size: 16px;
   padding: 6px 14px;
 }
+
 
