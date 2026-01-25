@@ -1,7 +1,7 @@
 .staff {
     position: relative;
     width: 720px;
-    height: 120px;
+    height: 96px;
     margin: 20px auto;
     background-color: white;
     border: 1px solid #00b3ff;
@@ -130,3 +130,4 @@
   font-size: 16px;
   padding: 6px 14px;
 }
+
