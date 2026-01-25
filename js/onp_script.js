@@ -780,7 +780,7 @@ function ensureStaffRow(rowIndex) {
     const row = document.createElement('div');
     row.className = 'staff';
     row.style.width = `${rowWidthPx()}px`;     // 段幅を自動設定
-    row.style.height = `120px`;                // 既存CSSと一致（必要なら取得して代入でもOK）
+    row.style.height = `96px`;                // 既存CSSと一致（必要なら取得して代入でもOK）
     // 5本の譜線を追加（既存のDOMを踏襲）
     for (let i = 0; i < 5; i++) {
       const line = document.createElement('div');
@@ -927,3 +927,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
