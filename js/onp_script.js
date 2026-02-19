@@ -181,9 +181,8 @@ function insertQuarterRest(autoPlace = true, x = 24) {
   const xPlace = autoPlace ? getNextInsertX(staff) : x;
   placeNoteByLeftBottom(img, xPlace, y);
   staff.appendChild(img);
-  // ★ 縦ドラッグは付けない。リサイズのみ付与
-  // makeVerticalDrag(img); // ← 付けない
-  makeResizeDrag(img);      // ← これだけ有効化
+  makeResizeDrag(img);
+  attachCommonInteractions(img);
   // レイアウト反映
   if (img.complete) scheduleLayout(staff);
   else img.addEventListener('load', () => scheduleLayout(staff), { once: true });
@@ -733,6 +732,7 @@ function insertNoteAtPitch(pitch, durKey = '4', autoPlace = true, x = 24) {
   staff.appendChild(img);
   makeVerticalDrag(img);
   makeResizeDrag(img);
+  attachCommonInteractions(img);
   // ★ 幅確定タイミングでリフロー
   if (img.complete) {
     scheduleLayout(staff);
@@ -927,3 +927,124 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// ===== ▼ 追加：独自メニュー制御 & 削除ロジック =====
+let _ctx = {
+  el: null,     // 対象要素（img.note-img / img.rest-img）
+  menu: null,   // #ctxMenu
+};
+
+function showContextMenu(x, y, targetEl) {
+  if (!_ctx.menu) _ctx.menu = document.getElementById('ctxMenu');
+  if (!_ctx.menu) return;
+
+  _ctx.el = targetEl;
+  _ctx.menu.style.left = `${x}px`;
+  _ctx.menu.style.top  = `${y}px`;
+  _ctx.menu.hidden = false;
+}
+
+function hideContextMenu() {
+  if (_ctx.menu) _ctx.menu.hidden = true;
+  _ctx.el = null;
+}
+
+// 対象img要素と、もしタイで繋がっていれば相方も一緒に削除
+function removeNoteOrRest(el) {
+  if (!el || !el.parentElement) return;
+  if(getSelected() === el) clearSelected(); // 削除前に選択解除
+
+  // accidental画像(#)がぶら下がっていれば掃除
+  if (el._accidentalEl) {
+    el._accidentalEl.remove();
+    el._accidentalEl = null;
+  }
+
+  // 音符で tieGroup を持つ場合は、同group全員を削除（通常は2つ）
+  if (el.classList.contains('note-img') && el.dataset.tieGroupID) {
+    const staff = el.parentElement;
+    const gid = el.dataset.tieGroupID;
+    const groupEls = Array.from(staff.querySelectorAll('.note-img'))
+      .filter(n => n.dataset.tieGroupID === gid);
+    groupEls.forEach(n => {
+      if (getSelected() === n) clearSelected(); // 削除前に選択解除
+      if (n._accidentalEl) { n._accidentalEl.remove(); n._accidentalEl = null; }
+      n.remove();
+    });
+  } else {
+    // 休符や単体音符はそのまま削除
+    el.remove();
+  }
+
+  // レイアウトや小節線・タイ描画を再計算
+  scheduleLayout(document.getElementById('score')); // time layoutを採用中
+}
+
+// 右クリックや長押し対応など、共通の相互作用を付与
+function attachCommonInteractions(imgEl) {
+  imgEl.addEventListener('pointerdown', (e) => {
+    setSelected(imgEl);
+  });
+  // ネイティブの右クリックメニューは抑止し、独自メニューを表示
+  imgEl.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    setSelected(imgEl);
+    showContextMenu(e.clientX, e.clientY, imgEl);
+  });
+
+  imgEl.addEventListener('pointerup', () => { if (lpTimer) { clearTimeout(lpTimer); lpTimer = null; } });
+  imgEl.addEventListener('pointercancel', () => { if (lpTimer) { clearTimeout(lpTimer); lpTimer = null; } });
+}
+
+// 画面外クリックやEscでメニューを閉じる
+document.addEventListener('mousedown', (e) => {
+  const menu = document.getElementById('ctxMenu');
+  if (!menu || menu.hidden) {
+    const isNote = (e.target && (e.target.classList.contains('note-img') || e.target.classList?.contains('rest-img')));
+    if (!isNote) clearSelected(); // 音符以外をクリックしたら選択解除
+    return;
+  }
+  if (!menu.contains(e.target)) hideContextMenu();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') hideContextMenu();
+});
+
+// メニューの「削除」ボタン
+document.addEventListener('DOMContentLoaded', () => {
+  const menu = document.getElementById('ctxMenu');
+  if (menu) {
+    menu.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action="delete"]');
+      if (btn && _ctx.el) {
+        removeNoteOrRest(_ctx.el);
+        hideContextMenu();
+      }
+    });
+  }
+  // #score 領域ではネイティブのコンテキストメニューを無効化
+  const score = document.getElementById('score');
+  if (score) score.addEventListener('contextmenu', (e) => e.preventDefault());
+});
+
+// ===== 選択管理ユーティリティ =====
+let _selectedEl = null;
+
+function setSelected(el) {
+  if (_selectedEl === el) return;
+  clearSelected();
+  _selectedEl = el;
+  if (_selectedEl) {
+    _selectedEl.classList.add('selected');
+    if (typeof _selectedEl.focus === 'function') _selectedEl.focus();
+  }
+}
+
+function clearSelected() {
+  if (_selectedEl) _selectedEl.classList.remove('selected');
+  _selectedEl = null;
+}
+
+function getSelected() {
+  return _selectedEl;
+}
