@@ -113,19 +113,56 @@
   cursor: grab;
 }
 
-/* ★ ボタン行を左右に分けるレイアウト */
+/* ボタン行を左右に分けるレイアウト */
 .toolbar {
   display: flex;
-  justify-content: space-between; /* 左ボタン群 ←→ 右ボタン */
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
-  width: 720px;         /* staff に合わせると揃ってキレイ */
+  width: 720px;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* 右端の再生ボタンの見た目はお好みで */
 .play-button {
   font-size: 16px;
   padding: 6px 14px;
+}
+
+/* 独自コンテキストメニュー */
+.context-menu {
+  position: fixed;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  padding: 6px 0;
+  z-index: 99999;
+}
+.context-menu[hidden] { display: none; }
+.context-menu > button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.context-menu > button:hover { background: #f5f5f5; }
+
+/* クリック選択の視覚化 */
+.note-img.selected, .rest-img.selected {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(96,165,250,0.35);
+  z-index: 10;
+}
+
+/* キーボードフォーカス時のフォールバック*/
+.note-img:focus, .rest-img:focus {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
 }
